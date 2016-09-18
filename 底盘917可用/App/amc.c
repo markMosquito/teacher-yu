@@ -88,11 +88,11 @@ void vAmcMotionTask( void *p_arg )
 		vTaskDelay(5*portTICK_MS);
 		if(amc_motion_target.wheel_angle - dir_angle_wheel[1]>0.5f)
 		{
-			DMA_SendCommand(MOTOR_DIR_2,0x02,0x45,0x00,0x02,-2030);//发送速度	
+			DMA_SendCommand(MOTOR_DIR_2,0x02,0x45,0x00,0x02,-4030);//发送速度	
 		}
 		else if(amc_motion_target.wheel_angle - dir_angle_wheel[1]<-0.5f)
 		{
-			DMA_SendCommand(MOTOR_DIR_2,0x02,0x45,0x00,0x02,2030);//发送速度	
+			DMA_SendCommand(MOTOR_DIR_2,0x02,0x45,0x00,0x02,4000);//发送速度	
 		}
 		else
 		{
@@ -100,10 +100,21 @@ void vAmcMotionTask( void *p_arg )
 		}
 		vTaskDelay(5*portTICK_MS);
 		//speed = 10000;
-		DMA_SendCommand(MOTOR_MARCH_1,0x02,0x45,0x00,0x02,speed);//发送速度
-		vTaskDelay(10*portTICK_MS);
-		DMA_SendCommand(MOTOR_MARCH_2,0x02,0x45,0x00,0x02,-speed);//发送速度
-		vTaskDelay(10*portTICK_MS);
+		if(((dir_angle_wheel[0] - dir_angle_wheel[1])> -4) &&((dir_angle_wheel[0] - dir_angle_wheel[1])< 4))
+		{
+			DMA_SendCommand(MOTOR_MARCH_1,0x02,0x45,0x00,0x02,speed);//发送速度
+			vTaskDelay(10*portTICK_MS);
+			DMA_SendCommand(MOTOR_MARCH_2,0x02,0x45,0x00,0x02,-speed);//发送速度
+			vTaskDelay(10*portTICK_MS);
+		}
+		else
+		{
+			DMA_SendCommand(MOTOR_MARCH_1,0x02,0x45,0x00,0x02,0);//发送速度
+			vTaskDelay(10*portTICK_MS);
+			DMA_SendCommand(MOTOR_MARCH_2,0x02,0x45,0x00,0x02,0);//发送速度
+			vTaskDelay(10*portTICK_MS);
+		}
+		
 		
 		read_amc_over_flag = 0;
 		time_out= 0;

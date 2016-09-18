@@ -73,13 +73,13 @@ void Remote_IRQHandler(uint8_t *pData)
 	if((tmp[0]+tmp[1]+tmp[2]+tmp[3]) == tmp[4])
 	{
 		memcpy(remote_data,tmp,8);
-		if(remote_data[0] < 1900)
+		if(remote_data[2] < 1200)
 		{
-			amc_motion_target.wheel_angle = (dir_angle_wheel[0]+dir_angle_wheel[1])/2 -20;
+			amc_motion_target.wheel_angle = (dir_angle_wheel[1]+dir_angle_wheel[1])/2 -20;
 		}
-		else if(remote_data[0] > 2150)
+		else if(remote_data[2] > 2800)
 		{
-			amc_motion_target.wheel_angle = (dir_angle_wheel[0]+dir_angle_wheel[1])/2 +20;
+			amc_motion_target.wheel_angle = (dir_angle_wheel[1]+dir_angle_wheel[1])/2 +20;
 		}
 		else
 		{

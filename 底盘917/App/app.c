@@ -75,6 +75,7 @@ void slidewayTest(void);
   extern u8 read_amc_over_flag;
   extern int32_t motor_pos[4];
   u8 init_success = 0;
+  int test = 0;
 static void vStartTask( void *p_arg )
 {
     (void)p_arg;
@@ -181,7 +182,7 @@ static void vStartTask( void *p_arg )
    //while(1);
    // xTaskCreate(vAmcPosTask,    "vAmcPosTask",      AMC_POS_TASK_STK,    NULL, AMC_POS_TASK_PRIO,     &AmcPosTaskHandle);
    //while(1);
-    xTaskCreate(vAmcMotionTask,  "vAmcMotionTask",    AMC_MOTION_TASK_STK,  NULL, AMC_MOTION_TASK_PRIO,   &AmcMotionTaskHandle);
+   // xTaskCreate(vAmcMotionTask,  "vAmcMotionTask",    AMC_MOTION_TASK_STK,  NULL, AMC_MOTION_TASK_PRIO,   &AmcMotionTaskHandle);
     //创建底盘任务
   
     /* 开始与电脑通讯 --------------------------------------------------------*/
@@ -189,7 +190,11 @@ static void vStartTask( void *p_arg )
     
 	while(1)
 	{
-		vTaskDelay(100*portTICK_MS);
+		DMA_SendCommand(MOTOR_MARCH_2,0x02,0x45,0x00,0x02,test);//发送速度
+		vTaskDelay(200*portTICK_MS);
+		DMA_SendCommand(MOTOR_MARCH_1,0x02,0x45,0x00,0x02,-test);//发送速度
+		vTaskDelay(200*portTICK_MS);
+		
 	}
 
 }
@@ -303,12 +308,12 @@ void StartTaskCreate(void)
         NULL);                      /* We are not using the task handle.                              */
 
     /* Create one task. */
-    xTaskCreate(vBeepTask,          /* Pointer to the function that implements the task.              */
-        "Beep",                     /* Text name for the task.  This is to facilitate debugging only. */
-        AppTaskBeepStk,             /* Stack depth in words.                                          */
-        NULL,                       /* We are not using the task parameter.                           */
-        APP_CFG_TASK_BEEP_PRIO,     /* This task will run at priority x.                              */
-        &BeepTaskHandle);
+//    xTaskCreate(vBeepTask,          /* Pointer to the function that implements the task.              */
+//        "Beep",                     /* Text name for the task.  This is to facilitate debugging only. */
+//        AppTaskBeepStk,             /* Stack depth in words.                                          */
+//        NULL,                       /* We are not using the task parameter.                           */
+//        APP_CFG_TASK_BEEP_PRIO,     /* This task will run at priority x.                              */
+//        &BeepTaskHandle);
 }
 //----------------------------------------------------------------
 /**

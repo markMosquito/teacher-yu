@@ -440,7 +440,7 @@ void DMA1_Stream6_IRQHandler(void)
 {
     static UsartTxMsg txMsg;
 	DMA_ClearITPendingBit(DMA1_Stream6, DMA_IT_TCIF6);
-	RS485_Rx;//拉低  接收 
+	//RS485_Rx;//拉低  接收 
     if( xQueueReceiveFromISR( UsartTxQueue, &txMsg, 0 ) )
     {
         DMA1_Stream6->NDTR = txMsg.DLC;
@@ -757,6 +757,7 @@ void DMA_SendCommand(u8 addr,u8 control,u8 index,u8 offset,u8 dataWords, int32_t
 {
 	static UsartTxMsg txMsg;
 	static UsartTxMsg data_part;
+	int i = 0;
 //	int32_t speed_mesured = 0;
 //    u16 crcdata = 0;
 	union int32ToChar FormatTrans;
@@ -807,8 +808,16 @@ void DMA_SendCommand(u8 addr,u8 control,u8 index,u8 offset,u8 dataWords, int32_t
 		break;
 		default:break;
 	}
-	//发送模式
 	
+//	RS485_Tx;
+//	vTaskDelay(2*portTICK_MS);
+//	//发送模式
+//	for(i =0;i<txMsg.DLC;i++)
+//	{
+//		USART_SendData(USART1,txMsg.Data[i]);                    
+//		while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);          
+//	}  
+      
  
 #if 0
 	if(DMA2_Stream7->NDTR == 0)
@@ -823,6 +832,7 @@ void DMA_SendCommand(u8 addr,u8 control,u8 index,u8 offset,u8 dataWords, int32_t
     if(DMA1_Stream6->NDTR == 0)//USART2
     {
 		RS485_Tx;
+		vTaskDelay(2*portTICK_MS);
         DMA1_Stream6->CR &= ~(uint32_t)DMA_SxCR_EN;
         DMA1_Stream6->NDTR = txMsg.DLC+2;
         DMA1_Stream6->M0AR = (uint32_t)(&txMsg.Data[0]);

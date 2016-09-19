@@ -38,7 +38,10 @@ void Beep_Configuration(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(IO_GPIO_PORT(IO_BEEP), &GPIO_InitStructure);
 
+	
+	
     BEEP_OFF;
+	
 }
 
 

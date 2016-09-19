@@ -15,6 +15,7 @@
 #include "Rsing_Led.h"
 #include "ry_usart_dma.h"
 #include "ry_adc.h"
+#include "Rsing_beep.h"
 /* Private variables ---------------------------------------------------------*/
 
 /* Private defines -----------------------------------------------------------*/
@@ -56,6 +57,13 @@ static void vStartTask( void *p_arg )
                     NULL,                    /* We are not using the task parameter.                           */
                     APP_CFG_TASK_MAIN_PRIO,  /* This task will run at priority x.                              */
                     &MainTaskHandle );  /* We are not using the task handle.                              */
+	
+	 xTaskCreate(    vBeepTask,               /* Pointer to the function that implements the task.              */
+                    "BeepTask",                  /* Text name for the task.  This is to facilitate debugging only. */
+                    AppTaskBeepStk,          /* Stack depth in words.                                          */
+                    NULL,                    /* We are not using the task parameter.                           */
+                    APP_CFG_TASK_BEEP_PRIO,  /* This task will run at priority x.                              */
+                    &BeepTaskHandle );  /* We are not using the task handle.                              */
   
     xTaskResumeAll();
     //End-AppTaskCreate();------------------------------------------------------
@@ -70,6 +78,8 @@ static void vStartTask( void *p_arg )
   * @retval None
   */
 extern u8 adc_begin_flag;
+extern vu16 After_filter[5];
+float vol = 0;
 portTASK_FUNCTION( vMainTask, pvParameters )
 {
     TickType_t xLastFlashTime;
@@ -84,6 +94,15 @@ portTASK_FUNCTION( vMainTask, pvParameters )
     for(;;)
     {
 		DmaSendPos();
+		vol = After_filter[4]/4096.0*3.3*1.3;
+		if(vol<3.5)
+		{
+			BEEP_ON;
+		}
+		else
+		{
+			BEEP_OFF;
+		}
         vTaskDelayUntil( &xLastFlashTime, 500 * portTICK_MS );
     }
 }

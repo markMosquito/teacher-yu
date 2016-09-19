@@ -107,7 +107,7 @@ void DMA1_Channel4_IRQHandler(void)
 {
 	DMA_ClearITPendingBit( DMA1_IT_TC4);
 }
-extern vu16 After_filter[4];
+extern vu16 After_filter[5];
 void DmaSendPos(void)
 {  
 	u16 sum = After_filter[0]+After_filter[1]+After_filter[2]+After_filter[3];

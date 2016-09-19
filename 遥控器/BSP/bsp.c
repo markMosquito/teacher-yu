@@ -8,7 +8,7 @@
   ******************************************************************************
   */
 #include "BSP.h"
-
+#include "Rsing_beep.h"
 void TIM2_Init(void)
 {
   TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
@@ -38,9 +38,10 @@ void BSP_Init(void)
     //Led -----------------------------------------
     LEDInit(LED0);
 
+	Beep_Configuration();
     vTaskDelay(50 * portTICK_MS );
     //LCD -----------------------------------------
-    LCD_Config();             //初始化12864
+    //LCD_Config();             //初始化12864
 }
 
 /********************************* END OF FILE ********************************/

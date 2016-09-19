@@ -18,9 +18,11 @@
 
 /* Private functions ---------------------------------------------------------*/
 /* Exported define -----------------------------------------------------------*/
+#define IO_BEEP PA(3)
+
 #ifndef IO_BEEP
- #define IO_BEEP         PE(12)
- #warning "IO_BEEP not define, so defined PE(12)."
+ #define IO_BEEP         PB(12)
+ #warning "IO_BEEP not define, so defined PB(12)."
 #endif
 
 #define BEEP_ON         (IO_GPIO_PORT(IO_BEEP)->BSRR = IO_GPIO_PIN(IO_BEEP))

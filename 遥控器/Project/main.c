@@ -51,6 +51,7 @@ extern void StartTaskCreate(void);      //in "app.c"
   */
 int main(void)
 {
+	GPIO_InitTypeDef  GPIO_InitStructure;
   /*!< At this stage the microcontroller clock setting is already configured, 
        this is done through SystemInit() function which is called from startup
        files (startup_stm32f40_41xxx.s/startup_stm32f427_437xx.s/

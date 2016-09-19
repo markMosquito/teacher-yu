@@ -16,7 +16,7 @@
 /* Private functions ---------------------------------------------------------*/
 
 #define N 50 //采样50次
-#define M 4 //4个通道
+#define M 5 //4个通道
 
 vu16 AD_Value[N][M]; //存储数据
 vu16 After_filter[M]; //
@@ -41,7 +41,7 @@ void adc_dma_config(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_1|GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 
@@ -61,6 +61,7 @@ void adc_dma_config(void)
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_9, 3, ADC_SampleTime_239Cycles5 );
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_11, 2, ADC_SampleTime_239Cycles5 );
 	ADC_RegularChannelConfig(ADC1, ADC_Channel_12, 1, ADC_SampleTime_239Cycles5 );
+	ADC_RegularChannelConfig(ADC1, ADC_Channel_15, 5, ADC_SampleTime_239Cycles5 );
 	
 	ADC_DMACmd(ADC1, ENABLE);// ADC1的DMA使能
 	ADC_Cmd(ADC1, ENABLE); //使能ADC1
